@@ -1,3 +1,6 @@
 # snake-game
 
-Slayest snake game ever
+'Python' Snake Game
+
+Collaborators:    Arushi Singh, Tanisi Das
+
