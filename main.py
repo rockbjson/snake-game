@@ -1,4 +1,5 @@
 import sys
+import pygame
 from characters import *
 from init import *
 
@@ -46,24 +47,11 @@ def display_lives_status():
     heart_full = pygame.image.load("graphics/heart_full.png").convert_alpha()
     heart_empty = pygame.image.load("graphics/heart_empty.png").convert_alpha()
 
-    if (lives == 0):
-        screen.blit(heart_full, (400, 15))
-        screen.blit(heart_full, (430, 15))
-        screen.blit(heart_full, (460, 15))
-    elif(lives == 1):
-        screen.blit(heart_full, (400, 15))
-        screen.blit(heart_full, (430, 15))
-        screen.blit(heart_empty, (460, 15))
-    elif (lives == 2):
-        screen.blit(heart_full, (400, 15))
-        screen.blit(heart_empty, (430, 15))
-        screen.blit(heart_empty, (460, 15))
-    elif (lives == 3):
-        screen.blit(heart_empty, (400, 15))
-        screen.blit(heart_empty, (430, 15))
-        screen.blit(heart_empty, (460, 15))
-    else:
-        display_game_over()
+    for i in range(3):
+        if i < lives:
+            screen.blit(heart_full, (400 + i * 30, 15))
+        else:
+            screen.blit(heart_empty, (400 + i * 30, 15))
 
 def display_points():
     # update points text and rectangle
@@ -91,15 +79,27 @@ def display_game_over():
     game_over_text, game_over_rect = render_text(game_over_font, "GAME OVER.", white, (255, 250))
     game_over_text_bg, game_over_bg_rect = render_text(title_font, "GAME OVER.", dark_green, (258, 253))
     score_font = pygame.font.Font(font, 24)
-    score_text, score_rect = render_text(score_font, f"Your score was: {characters.points}", dark_green, (255, 410))
+    restart_font = pygame.font.Font(font, 24)
+    score_text, score_rect = render_text(score_font, f"Your score was: {characters.points}", dark_green, (255, 300))
+    restart_text, restart_rect = render_text(restart_font, "Press any key to restart", dark_green, (260, 430))
 
     screen.blit(background, (0, 0))
     screen.blit(game_over_text_bg, game_over_bg_rect)
     screen.blit(game_over_text, game_over_rect)
     screen.blit(score_text, score_rect)
+    screen.blit(restart_text, restart_rect)
+
+def reset_game():
+    global characters, lives, start_game, game_over
+    characters = Characters()
+    lives = 3
+    start_game = False
+    game_over = False
 
 running = True
 start_game = False
+game_over = False
+lives = 3  # Ensure lives are initialized
 
 # displaying the start screen
 display_start_screen()
@@ -110,7 +110,11 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYDOWN:
-            start_game = True
+            if game_over:
+                reset_game()
+                display_start_screen()
+            else:
+                start_game = True
 
     if start_game:
         # start the game here
@@ -120,17 +124,19 @@ while running:
         head_direction = characters.find_snake_direction(event)
 
         # display characters
+        if characters.display_character(head_direction) is False:
+            lives -= 1
 
-        if (characters.display_character((head_direction)) is False):
-            lives = lives + 1
-
-        if (lives>3):
+        if lives < 0:
+            game_over = True
             start_game = False
+        else:
+            # display points
+            display_points()
+            display_lives_status()
 
-        # display points
-        display_points()
-
-        display_lives_status()
+    if game_over:
+        display_game_over()
 
     # set game speed
     clock.tick(14)
@@ -139,4 +145,3 @@ while running:
 
 pygame.quit()
 sys.exit()
-
