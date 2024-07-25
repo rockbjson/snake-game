@@ -8,11 +8,19 @@ A recreation of the classic Snake game with retro-inspired pixel-style graphics 
 - simple intuitive controls
 
 ## Installation
-- clone the repository: git clone https://github.com/yourusername/snake-game.git
+- clone the repository:
+  ```bash
+  git clone https://github.com/yourusername/snake-game.git
 - navigate to directory
-- install dependecies: pip install pygame
-- run the game: python main.py
+- install dependecies:
+  ```bash
+  pip install pygame
+- run the game:
+  ```bash
+  python main.py
+  
 **OR**
+
 - run the program on an IDE (example: PyCharm)
 
 ## Usage
