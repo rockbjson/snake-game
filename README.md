@@ -12,6 +12,8 @@ A recreation of the classic Snake game with retro-inspired pixel-style graphics 
 - navigate to directory
 - install dependecies: pip install pygame
 - run the game: python main.py
+**OR**
+- run the program on an IDE (example: PyCharm)
 
 ## Usage
 - press any key to start/restart the game
@@ -19,5 +21,7 @@ A recreation of the classic Snake game with retro-inspired pixel-style graphics 
 
 ## Collaborators
 Arushi Singh, Tanisi Das
+
+Last game update: 2024/07/25
 
 
